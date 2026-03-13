@@ -68,7 +68,7 @@ export default function WhatsAppButton() {
     const finalMessage = `${baseMessage}\n\n(Ref: ${currentUrl})`;
 
     const url = `https://wa.me/6289509888404?text=${encodeURIComponent(
-      finalMessage
+      finalMessage,
     )}`;
 
     window.open(url, "_blank");

@@ -174,7 +174,7 @@ export default function RootLayout({
         {children}
         <Analytics />
         <Toaster position="top-center" reverseOrder={false} />
-        <WhatsAppButton />
+        {/* <WhatsAppButton /> */}
 
         {/* --- META PIXEL NOSCRIPT --- */}
         <noscript>

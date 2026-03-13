@@ -13,23 +13,41 @@ import {
   ChevronRight,
   ChevronLeft,
   MessageSquare,
+  LandPlot,
+  Share2,
 } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
 
-// DATA KHUSUS BANGUNJIWO (Ubah bagian ini untuk halaman lain)
 const DATA = {
   name: "Titik Huni Bangunjiwo",
   location: "Kasihan, Bantul, Yogyakarta",
   description:
-    "Menghadirkan harmoni antara material jujur dan alam Bantul yang asri. Hunian ini dirancang untuk ketenangan hidup yang maksimal dengan sirkulasi udara optimal.",
+    "Menghadirkan harmoni antara material jujur dan alam Bantul yang asri. Hunian modern tropis di Yogyakarta ini dirancang untuk ketenangan hidup maksimal dengan sirkulasi udara optimal dan pencahayaan alami.",
   gallery: [
-    "/assets/images/rumah-bangunjiwo.jpg",
-    "/assets/images/ruang-tamu-titikhuni.jpg",
-    "/assets/images/kamar-titikhuni.jpg",
+    {
+      src: "/assets/images/rumah-bangunjiwo.jpg",
+      label: "Fasad Utama Titik Huni Bangunjiwo",
+    },
+    {
+      src: "/assets/images/ruang-tamu-titikhuni.jpg",
+      label: "Interior Ruang Tamu Modern",
+    },
+    {
+      src: "/assets/images/kamar-titikhuni.jpg",
+      label: "Kamar Tidur Utama Minimalis",
+    },
+    { src: "/assets/images/rumah-bangunjiwo.jpg", label: "Area Taman Hijau" },
+    {
+      src: "/assets/images/ruang-tamu-titikhuni.jpg",
+      label: "Dapur & Area Makan",
+    },
+    { src: "/assets/images/kamar-titikhuni.jpg", label: "Kamar Mandi Bersih" },
   ],
   specs: { land: "105m²", building: "65m²", beds: 2, baths: 1 },
   price: "550 Jutaan",
+  priceRaw: 550000000,
   waLink:
-    "https://wa.me/6289509888404?text=Halo%20Titik%20Huni,%20saya%20tertarik%20dengan%20Bangunjiwo",
+    "https://wa.me/6289509888404?text=Halo Titik Huni, saya tertarik dengan Bangunjiwo",
 };
 
 export default function BangunjiwoPage() {
@@ -40,129 +58,235 @@ export default function BangunjiwoPage() {
   const prevImg = () =>
     setCurrentImg((p) => (p === 0 ? DATA.gallery.length - 1 : p - 1));
 
+  const handleShare = async () => {
+    const shareData = {
+      title: DATA.name,
+      text: DATA.description,
+      url: typeof window !== "undefined" ? window.location.href : "",
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(shareData.url);
+        toast.success("Link berhasil disalin!");
+      }
+    } catch (err) {
+      console.error("Gagal berbagi:", err);
+    }
+  };
+
+  const image = DATA.gallery[currentImg];
+
   return (
-    <main className="bg-white min-h-screen selection:bg-black selection:text-white">
-      {/* Navigation */}
-      <nav className="fixed top-8 left-8 z-50">
+    <main className="bg-white lg:h-screen lg:overflow-hidden font-archivo">
+      <Toaster position="bottom-center" />
+
+      {/* SEO: JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org/",
+            "@type": "RealEstateListing",
+            name: DATA.name,
+            description: DATA.description,
+            address: {
+              "@type": "PostalAddress",
+              addressLocality: "Bantul",
+              addressRegion: "Yogyakarta",
+              addressCountry: "ID",
+            },
+            priceCurrency: "IDR",
+            price: DATA.priceRaw,
+          }),
+        }}
+      />
+
+      {/* Floating Navigation */}
+      <nav className="fixed top-4 left-4 right-4 lg:top-6 lg:left-6 lg:right-6 z-50 flex justify-between items-center">
         <Link
           href="/"
-          className="group flex items-center gap-3 bg-white/90 backdrop-blur-xl px-5 py-2.5 rounded-full border border-neutral-100 shadow-sm transition-all hover:bg-black hover:text-white"
+          className="flex items-center gap-2 bg-white/90 backdrop-blur-xl px-4 py-2 rounded-full border border-neutral-100 shadow hover:bg-black hover:text-white transition group"
         >
-          <ArrowLeft size={16} />
-          <span className="text-[10px] font-archivo uppercase tracking-[0.3em]">
-            Home
+          <ArrowLeft
+            size={16}
+            className="group-hover:-translate-x-1 transition-transform"
+          />
+          <span className="text-[10px] uppercase tracking-[0.2em] font-bold">
+            Back
           </span>
         </Link>
+
+        <button
+          onClick={handleShare}
+          className="p-2 lg:p-3 bg-white/90 backdrop-blur-xl rounded-full border border-neutral-100 shadow hover:bg-neutral-100 transition active:scale-90"
+        >
+          <Share2 size={18} />
+        </button>
       </nav>
 
-      <section className="flex flex-col lg:flex-row min-h-screen items-center">
-        {/* Left: Square Gallery Slider */}
-        <div className="w-full lg:w-1/2 p-6 md:p-12 lg:p-20 flex justify-center bg-neutral-50/50">
-          <div className="relative aspect-square w-full max-w-[650px] overflow-hidden bg-neutral-200 shadow-2xl group">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentImg}
-                initial={{ opacity: 0, scale: 1.05 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute inset-0"
-              >
-                <Image
-                  src={DATA.gallery[currentImg]}
-                  alt={DATA.name}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </motion.div>
-            </AnimatePresence>
+      <div className="flex flex-col lg:flex-row h-full">
+        {/* Gallery Section - Fixed Height on Desktop */}
+        <section className="w-full lg:w-3/5 relative h-[45vh] sm:h-[50vh] lg:h-full overflow-hidden">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={image.src}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className="relative w-full h-full"
+            >
+              <Image
+                src={image.src}
+                alt={`${DATA.name} - ${image.label}`}
+                fill
+                priority
+                sizes="(max-width:768px) 100vw, 60vw"
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+            </motion.div>
+          </AnimatePresence>
 
-            <div className="absolute inset-0 flex items-center justify-between px-6 opacity-0 group-hover:opacity-100 transition-all duration-500">
-              <button
-                onClick={prevImg}
-                className="w-12 h-12 flex items-center justify-center bg-white/95 rounded-full shadow-xl hover:bg-black hover:text-white transition-all"
-              >
-                <ChevronLeft size={20} />
-              </button>
-              <button
-                onClick={nextImg}
-                className="w-12 h-12 flex items-center justify-center bg-white/95 rounded-full shadow-xl hover:bg-black hover:text-white transition-all"
-              >
-                <ChevronRight size={20} />
-              </button>
+          <div className="absolute bottom-4 left-4 lg:bottom-10 lg:left-10 text-white z-10">
+            <p className="uppercase tracking-[0.3em] text-[10px] lg:text-xs font-medium">
+              {image.label}
+            </p>
+            <p className="text-[9px] opacity-60 mt-1">
+              0{currentImg + 1} / 0{DATA.gallery.length}
+            </p>
+          </div>
+
+          <div className="absolute bottom-4 right-4 lg:bottom-10 lg:right-10 flex gap-2 z-10">
+            <button
+              onClick={prevImg}
+              className="p-3 lg:p-4 bg-white/10 backdrop-blur border border-white/20 text-white hover:bg-white hover:text-black transition rounded-sm"
+            >
+              <ChevronLeft size={18} />
+            </button>
+            <button
+              onClick={nextImg}
+              className="p-3 lg:p-4 bg-white/10 backdrop-blur border border-white/20 text-white hover:bg-white hover:text-black transition rounded-sm"
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
+        </section>
+
+        {/* Content Section - Scrollable independently on desktop */}
+        <section className="w-full lg:w-2/5 h-full px-6 py-8 md:px-12 lg:px-12 xl:px-16 lg:py-12 overflow-y-auto flex flex-col">
+          {/* Main Content Wrapper to push CTA to bottom if needed */}
+          <div className="flex-grow">
+            <header className="mb-6 lg:mb-8">
+              <div className="flex items-center gap-2 text-neutral-500 mb-2">
+                <MapPin size={14} className="text-neutral-900" />
+                <address className="not-italic text-[10px] uppercase tracking-[0.25em] font-bold">
+                  {DATA.location}
+                </address>
+              </div>
+
+              <h1 className="text-3xl md:text-5xl lg:text-5xl xl:text-6xl font-bold tracking-tight mb-4 text-neutral-900 leading-none">
+                Titik Huni <br />{" "}
+                <span className="text-neutral-300">Tirtomartani.</span>
+              </h1>
+
+              <p className="text-neutral-500 leading-relaxed text-sm md:text-base">
+                {DATA.description}
+              </p>
+            </header>
+
+            {/* Specs Grid */}
+            <div className="grid grid-cols-2 gap-y-6 lg:gap-y-4 gap-x-4 py-6 border-y border-neutral-100 mb-6">
+              <Spec
+                icon={<LandPlot size={18} />}
+                label="Land"
+                value={DATA.specs.land}
+              />
+              <Spec
+                icon={<Maximize size={18} />}
+                label="Building"
+                value={DATA.specs.building}
+              />
+              <Spec
+                icon={<Bed size={18} />}
+                label="Bedroom"
+                value={`${DATA.specs.beds}`}
+              />
+              <Spec
+                icon={<Bath size={18} />}
+                label="Bathroom"
+                value={`${DATA.specs.baths}`}
+              />
             </div>
           </div>
-        </div>
 
-        {/* Right: Details */}
-        <article className="w-full lg:w-1/2 px-8 py-16 md:px-20 lg:pr-32">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-          >
-            <div className="flex items-center gap-3 text-neutral-400 mb-6">
-              <MapPin size={14} />
-              <span className="text-[10px] font-archivo uppercase tracking-[0.4em]">
-                {DATA.location}
-              </span>
-            </div>
-
-            <h1 className="text-5xl md:text-7xl font-archivo uppercase tracking-tighter mb-10 leading-none">
-              {DATA.name.split(" ").pop()}
-            </h1>
-
-            <p className="text-neutral-500 font-light leading-relaxed mb-12 text-base md:text-xl">
-              {DATA.description}
-            </p>
-
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-y-10 py-10 border-y border-neutral-100 mb-12">
-              <div className="space-y-1">
-                <p className="text-[9px] uppercase tracking-[0.2em] text-neutral-400 font-bold">
-                  Bangunan
+          {/* Sticky/Bottom CTA Area */}
+          <div className="mt-auto pt-4 space-y-4">
+            <div className="p-5 lg:p-6 bg-neutral-50 rounded-xl flex justify-between items-center border border-neutral-100">
+              <div>
+                <p className="text-[9px] uppercase tracking-widest text-neutral-400 font-bold">
+                  Starting Price
                 </p>
-                <div className="flex items-center gap-2">
-                  <Maximize size={16} className="text-neutral-300" />
-                  <span className="text-sm font-medium">
-                    {DATA.specs.building}
-                  </span>
-                </div>
+                <p className="text-xl lg:text-2xl xl:text-3xl font-bold">
+                  {DATA.price}
+                </p>
               </div>
-              <div className="space-y-1">
-                <p className="text-[9px] uppercase tracking-[0.2em] text-neutral-400 font-bold">
-                  Fasilitas
+              <div className="text-right">
+                <p className="text-[9px] uppercase tracking-widest text-neutral-400 font-bold">
+                  Status
                 </p>
-                <div className="flex items-center gap-4 text-sm font-medium">
-                  <span className="flex items-center gap-2">
-                    <Bed size={16} className="text-neutral-300" />{" "}
-                    {DATA.specs.beds}
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <Bath size={16} className="text-neutral-300" />{" "}
-                    {DATA.specs.baths}
-                  </span>
-                </div>
-              </div>
-              <div className="space-y-1">
-                <p className="text-[9px] uppercase tracking-[0.2em] text-neutral-400 font-bold">
-                  Mulai Dari
-                </p>
-                <span className="text-sm font-bold">{DATA.price}</span>
+                <span className="text-[10px] bg-neutral-900 text-white px-2 py-0.5 rounded-full uppercase font-bold">
+                  Available
+                </span>
               </div>
             </div>
 
             <Link
               href={DATA.waLink}
               target="_blank"
-              className="flex items-center justify-center gap-4 bg-[#262626] text-white px-10 py-5 text-[10px] font-archivo uppercase tracking-[0.4em] hover:bg-black transition-all"
+              rel="noopener noreferrer"
+              className="group flex items-center justify-between bg-neutral-900 text-white px-6 py-4 lg:py-5 rounded-xl hover:bg-black transition-all shadow-xl active:scale-[0.98]"
             >
-              <span>Dapatkan Brosur</span>
-              <MessageSquare size={14} />
+              <div className="flex flex-col text-left">
+                <span className="text-[9px] uppercase tracking-widest font-bold text-neutral-500">
+                  Konsultasi Unit
+                </span>
+                <span className="font-bold text-sm lg:text-base">
+                  Ambil Penawaran Sekarang
+                </span>
+              </div>
+              <MessageSquare
+                size={20}
+                className="group-hover:rotate-12 transition-transform"
+              />
             </Link>
-          </motion.div>
-        </article>
-      </section>
+          </div>
+        </section>
+      </div>
     </main>
+  );
+}
+
+function Spec({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="space-y-1">
+      <p className="text-[9px] uppercase tracking-widest text-neutral-400 font-bold">
+        {label}
+      </p>
+      <div className="flex items-center gap-2">
+        <div className="text-neutral-900">{icon}</div>
+        <span className="font-medium text-sm">{value}</span>
+      </div>
+    </div>
   );
 }

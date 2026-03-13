@@ -8,19 +8,33 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const images = [
   {
-    src: "/assets/images/rumah-bangunjiwo.jpg",
-    title: "Sederhana & Jujur",
-    subtitle: "Pendekatan desain yang mengutamakan ketenangan.",
+    src: "/assets/images/konsep_titikhuni.svg",
+    title: "Sederhana, Tapi Bermakna",
+    subtitle:
+      "Rumah dengan desain jujur yang menghadirkan ketenangan dalam setiap sudut.",
   },
   {
     src: "/assets/images/kamar-titikhuni.jpg",
-    title: "Ruang yang Cukup",
-    subtitle: "Dirancang untuk hidup yang lebih tenang.",
+    title: "Ruang yang Cukup untuk Hidup",
+    subtitle: "Setiap ruang dirancang fungsional, nyaman, dan terasa lapang.",
   },
   {
     src: "/assets/images/ruang-tamu-titikhuni.jpg",
-    title: "Tempat Pulang",
-    subtitle: "Bukan sekadar rumah, tapi tempat yang terasa tepat.",
+    title: "Tempat Pulang yang Sesungguhnya",
+    subtitle:
+      "Bukan sekadar rumah, tapi tempat di mana cerita keluarga dimulai.",
+  },
+  {
+    src: "/assets/images/fasad-titikhuni.svg",
+    title: "Desain Hangat & Fungsional",
+    subtitle:
+      "Perpaduan estetika modern dan fungsi yang memudahkan kehidupan sehari-hari.",
+  },
+  {
+    src: "/assets/images/ruang-titikhuni.svg",
+    title: "Ruang untuk Bernapas",
+    subtitle:
+      "Cahaya alami, udara segar, dan ruang terbuka untuk hidup yang lebih sehat.",
   },
 ];
 

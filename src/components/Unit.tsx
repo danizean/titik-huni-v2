@@ -1,3 +1,4 @@
+//src/components/Unit.tsx
 "use client";
 
 import { motion } from "framer-motion";
@@ -9,48 +10,54 @@ const units = [
   {
     name: "Candibinangun",
     location: "Pakem, Sleman",
-    image: "/assets/images/rumah-bangunjiwo.jpg",
-    href: "/kluster-candibinangun",
+    slug: "rumah-candibinangun-sleman",
+    image: "/assets/images/candibinangun/1.jpg",
+    price: "Mulai 740 Juta",
     status: "Ready Unit",
     isAvailable: true,
   },
   {
     name: "Bangunjiwo",
     location: "Kasihan, Bantul",
-    image: "/assets/images/rumah-bangunjiwo.jpg",
-    href: "/kluster-bangunjiwo",
+    slug: "rumah-bangunjiwo-bantul",
+    image: "/assets/images/bangunjiwo/1.webp",
+    price: "Mulai 575 Juta",
     status: "Ready Unit",
     isAvailable: true,
   },
   {
     name: "Pesona Pinka",
     location: "Berbah, Sleman",
-    image: "/assets/images/fasad-titikhuni.svg",
-    href: "/kluster-pinka",
+    slug: "rumah-berbah-sleman",
+    image: "/assets/images/rumah-berbah-sleman.svg",
+    price: "Sold Out",
     status: "Sold Out",
     isAvailable: true,
   },
   {
     name: "Tirtomartani",
     location: "Kalasan, Sleman",
-    image: "/assets/images/rumah-bangunjiwo.jpg",
-    href: "/kluster-tirtomartani",
+    slug: "rumah-tirtomartani-kalasan",
+    image: "/assets/images/rumah-tirtomartani-kalasan.jpg",
+    price: "Mulai 675 Juta",
     status: "Ready Unit",
     isAvailable: true,
   },
   {
     name: "Trirenggo",
     location: "Bantul Kota",
-    image: "/assets/images/rumah-bangunjiwo.jpg",
-    href: "/kluster-trirenggo",
-    status: "Ready Unit",
-    isAvailable: true,
+    slug: "rumah-trirenggo-bantul",
+    image: "/assets/images/rumah-trirenggo-bantul.jpg",
+    price: "Mulai 575 Juta",
+    status: "Coming Soon",
+    isAvailable: false,
   },
   {
     name: "Next Project",
-    location: "Coming Soon",
-    image: "/assets/images/rumah-bangunjiwo.jpg",
-    href: "#",
+    location: "Yogyakarta",
+    slug: "",
+    image: "/assets/images/rumah-comingsoon-jogja.jpg",
+    price: "",
     status: "Coming Soon",
     isAvailable: false,
   },
@@ -59,12 +66,32 @@ const units = [
 export const Unit = () => {
   return (
     <section
-      id="units"
+      id="unit-perumahan-jogja"
       className="py-24 md:py-32 bg-white"
       aria-labelledby="unit-title"
     >
+      {/* SEO Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            name: "Perumahan Titik Huni Yogyakarta",
+            itemListElement: units
+              .filter((u) => u.slug)
+              .map((unit, index) => ({
+                "@type": "ListItem",
+                position: index + 1,
+                name: `Rumah ${unit.name} ${unit.location}`,
+                url: `https://titikhuni.com/unit/${unit.slug}`,
+              })),
+          }),
+        }}
+      />
+
       <div className="max-w-7xl mx-auto px-6">
-        {/* Header Section */}
+        {/* Header SEO */}
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -73,15 +100,16 @@ export const Unit = () => {
             transition={{ duration: 0.8 }}
             className="max-w-xl"
           >
-            <span className="text-[10px] font-archivo uppercase tracking-[0.5em] text-neutral-400 block mb-4">
-              Koleksi Kluster
+            <span className="text-[10px] uppercase tracking-[0.5em] text-neutral-400 block mb-4">
+              Perumahan Yogyakarta
             </span>
+
             <h2
               id="unit-title"
-              className="text-4xl md:text-5xl font-archivo uppercase leading-none tracking-tighter text-neutral-900"
+              className="text-4xl md:text-5xl uppercase leading-none tracking-tighter text-neutral-900"
             >
-              Unit Terkurasi <br />
-              <span className="text-neutral-300">Titik Huni.</span>
+              Rumah Minimalis Jogja <br />
+              <span className="text-neutral-300">Titik Huni</span>
             </h2>
           </motion.div>
 
@@ -89,35 +117,36 @@ export const Unit = () => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-neutral-500 font-light max-w-xs text-sm md:text-base leading-relaxed"
+            className="text-neutral-500 max-w-xs text-sm md:text-base leading-relaxed"
           >
-            Setiap unit dirancang dengan presisi arsitektural untuk menghadirkan
-            ruang yang bernafas di Yogyakarta.
+            Pilihan rumah modern di Sleman dan Bantul Yogyakarta dengan desain
+            minimalis tropis, lokasi strategis, dan potensi investasi properti
+            yang tinggi.
           </motion.p>
         </div>
 
-        {/* Grid Unit */}
+        {/* Unit Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {units.map((unit, index) => (
             <motion.article
               key={index}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
+              viewport={{ once: true }}
               transition={{
                 duration: 0.6,
-                delay: index * 0.05, // Delay lebih kecil untuk percepatan loading
+                delay: index * 0.05,
                 ease: [0.22, 1, 0.36, 1],
               }}
             >
               <div
-                className={`relative group ${!unit.isAvailable ? "cursor-default" : "cursor-pointer"}`}
+                className={`relative group ${!unit.isAvailable ? "cursor-default" : ""}`}
               >
                 {unit.isAvailable ? (
                   <Link
-                    href={unit.href}
+                    href={`/unit/${unit.slug}`}
+                    title={`Rumah ${unit.name} ${unit.location} Yogyakarta`}
                     className="block"
-                    title={`Lihat detail kluster ${unit.name}`}
                   >
                     <UnitCardContent unit={unit} index={index} />
                   </Link>
@@ -142,17 +171,6 @@ const UnitCardContent = ({
   index: number;
   isLocked?: boolean;
 }) => {
-  const getTagStyles = (status: string) => {
-    switch (status) {
-      case "Sold Out":
-        return "bg-neutral-900 text-white";
-      case "Coming Soon":
-        return "bg-neutral-400 text-white";
-      default:
-        return "bg-white/90 text-neutral-900";
-    }
-  };
-
   return (
     <>
       <div
@@ -160,25 +178,31 @@ const UnitCardContent = ({
       >
         <Image
           src={unit.image}
-          alt={`Proyek Properti Titik Huni di ${unit.location} - Kluster ${unit.name}`}
+          alt={`Rumah Minimalis ${unit.name} ${unit.location} Yogyakarta`}
           fill
-          priority={index < 2} // OPTIMASI LCP: Memprioritaskan gambar yang muncul pertama di layar
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // OPTIMASI LCP: Meminta ukuran gambar yang sesuai
-          className={`object-cover transition-transform duration-700 ${isLocked ? "blur-[2px] opacity-60" : "group-hover:scale-105"}`}
+          priority={index < 2}
+          sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
+          className={`object-cover transition-transform duration-700 ${
+            isLocked ? "blur-[2px] opacity-60" : "group-hover:scale-105"
+          }`}
         />
 
-        <div className="absolute top-6 left-6 z-20">
-          <span
-            className={`backdrop-blur-md px-4 py-1.5 text-[9px] uppercase tracking-[0.2em] font-bold ${getTagStyles(unit.status)}`}
-          >
+        <div className="absolute top-6 left-6">
+          <span className="backdrop-blur-md px-4 py-1.5 text-[9px] uppercase tracking-[0.2em] font-bold bg-white/90">
             {unit.status}
           </span>
         </div>
 
-        <div
-          className={`absolute inset-0 z-10 transition-opacity duration-500 flex items-center justify-center ${isLocked ? "bg-black/10 opacity-100" : "bg-black/20 opacity-0 group-hover:opacity-100"}`}
-        >
-          <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500 shadow-xl">
+        {!isLocked && (
+          <div className="absolute bottom-6 left-6 text-white">
+            <p className="text-xs uppercase tracking-widest opacity-80">
+              {unit.price}
+            </p>
+          </div>
+        )}
+
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/20 transition">
+          <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-xl">
             {isLocked ? (
               <Lock size={20} className="text-neutral-400" />
             ) : (
@@ -190,9 +214,10 @@ const UnitCardContent = ({
 
       <div className="mt-6 flex justify-between items-start">
         <div className={isLocked ? "opacity-40" : ""}>
-          <h3 className="text-xl font-archivo uppercase tracking-tight text-neutral-900 mb-1">
-            {unit.name}
+          <h3 className="text-xl uppercase tracking-tight text-neutral-900 mb-1">
+            Kluster {unit.name}
           </h3>
+
           <div className="flex items-center gap-2 text-neutral-400">
             <MapPin size={12} aria-hidden="true" />
             <span className="text-[10px] uppercase tracking-widest">
@@ -202,8 +227,8 @@ const UnitCardContent = ({
         </div>
 
         {!isLocked && (
-          <div className="pt-2 text-[10px] font-archivo uppercase tracking-[0.2em] text-neutral-300 group-hover:text-neutral-900 transition-colors">
-            Lihat Detail
+          <div className="pt-2 text-[10px] uppercase tracking-[0.2em] text-neutral-300 group-hover:text-neutral-900 transition-colors">
+            Detail
           </div>
         )}
       </div>

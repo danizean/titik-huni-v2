@@ -26,13 +26,13 @@ const DATA = {
     "Menghadirkan harmoni antara material jujur dan alam Bantul yang asri. Hunian modern tropis di Yogyakarta ini dirancang untuk ketenangan hidup maksimal dengan sirkulasi udara optimal dan pencahayaan alami.",
 
   gallery: [
-    { src: "/assets/images/berbah/1.svg", label: "Fasad Utama" },
-    { src: "/assets/images/berbah/2.svg", label: "Ruang Tamu" },
-    { src: "/assets/images/berbah/3.svg", label: "Kamar Tidur" },
-    { src: "/assets/images/berbah/4.svg", label: "Taman" },
-    { src: "/assets/images/berbah/5.svg", label: "Dapur" },
-    { src: "/assets/images/berbah/6.svg", label: "Kamar Mandi" },
-    { src: "/assets/images/berbah/7.svg", label: "Ruang Keluarga" },
+    { src: "/assets/images/berbah/1.webp", label: "Fasad Utama" },
+    { src: "/assets/images/berbah/2.webp", label: "Ruang Tamu" },
+    { src: "/assets/images/berbah/3.webp", label: "Kamar Tidur" },
+    { src: "/assets/images/berbah/4.webp", label: "Taman" },
+    { src: "/assets/images/berbah/5.webp", label: "Dapur" },
+    { src: "/assets/images/berbah/6.webp", label: "Kamar Mandi" },
+    { src: "/assets/images/berbah/7.webp", label: "Ruang Keluarga" },
   ],
 
   specs: {

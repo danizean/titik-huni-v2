@@ -8,13 +8,13 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const images = [
   {
-    src: "/assets/images/konsep_titikhuni.svg",
+    src: "/assets/images/konsep_titikhuni.webp",
     title: "Sederhana, Tapi Bermakna",
     subtitle:
       "Rumah dengan desain jujur yang menghadirkan ketenangan dalam setiap sudut.",
   },
   {
-    src: "/assets/images/kamar-titikhuni.jpg",
+    src: "/assets/images/kamar-titikhuni.webp",
     title: "Ruang yang Cukup untuk Hidup",
     subtitle: "Setiap ruang dirancang fungsional, nyaman, dan terasa lapang.",
   },

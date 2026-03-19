@@ -20,7 +20,7 @@ const units = [
     name: "Bangunjiwo",
     location: "Kasihan, Bantul",
     slug: "rumah-bangunjiwo-bantul",
-    image: "/assets/images/bangunjiwo/1.webp",
+    image: "/assets/images/rumah-bangunjiwo-bantul.jpg",
     price: "Mulai 575 Juta",
     status: "Ready Unit",
     isAvailable: true,
